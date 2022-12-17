@@ -45,7 +45,7 @@ public class ShowServiceImpl implements ShowService {
         TheaterEntity theaterEntity = theaterRepository.findById(showEntryDto.getTheaterResponseDto().getId()).get();
 
 
-        showEntity.setMovie(movieEntity); //Why are we setting these varibble
+        showEntity.setMovie(movieEntity); //Why are we setting these variables
         showEntity.setTheater(theaterEntity);
 
         showEntity = showRepository.save(showEntity);
@@ -57,7 +57,6 @@ public class ShowServiceImpl implements ShowService {
 
 
         //We need to create Response Show Dto.
-
         ShowResponseDto showResponseDto = ShowConvertor.convertEntityToDto(showEntity,showEntryDto);
 
         return showResponseDto;
