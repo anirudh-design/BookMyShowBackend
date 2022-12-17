@@ -45,6 +45,8 @@ public class TheaterServiceImpl implements TheaterService {
         for(TheaterSeatsEntity theaterSeatsEntity:seats){
             theaterSeatsEntity.setTheater(theaterEntity);
         }
+        theaterSeatsRepository.saveAll(seats);
+
         theaterEntity.setType(TheaterType.SINGLE);
 
         log.info("The theater entity is "+ theaterEntity);
@@ -75,9 +77,6 @@ public class TheaterServiceImpl implements TheaterService {
         seats.add(getTheaterSeat("2D",100,SeatType.PREMIUM));
         seats.add(getTheaterSeat("2E",100,SeatType.PREMIUM));
 
-
-        theaterSeatsRepository.saveAll(seats);
-
         return seats;
         //Add in this TheaterSeatEntity type
 
@@ -88,7 +87,7 @@ public class TheaterServiceImpl implements TheaterService {
         return TheaterSeatsEntity.builder().seatNumber(seatName).rate(rate).seatType(seatType).build();
     }
 
-    //Seperate function will be create...
+    //Separate function will be created...
 
 
     @Override
