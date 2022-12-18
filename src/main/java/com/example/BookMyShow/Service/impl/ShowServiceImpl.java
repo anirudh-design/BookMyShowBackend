@@ -50,11 +50,10 @@ public class ShowServiceImpl implements ShowService {
 
         showEntity = showRepository.save(showEntity);
 
-
         //We need to pass the list of the theater seats
-        generateShowEntitySeats(theaterEntity.getSeats(),showEntity);
+        List<ShowSeatsEntity> l=generateShowEntitySeats(theaterEntity.getSeats(),showEntity);
 
-
+        showSeatsRepository.saveAll(l);
 
         //We need to create Response Show Dto.
         ShowResponseDto showResponseDto = ShowConvertor.convertEntityToDto(showEntity,showEntryDto);
@@ -62,7 +61,7 @@ public class ShowServiceImpl implements ShowService {
         return showResponseDto;
     }
 
-    public void generateShowEntitySeats(List<TheaterSeatsEntity> theaterSeatsEntityList,ShowEntity showEntity){
+    public List<ShowSeatsEntity> generateShowEntitySeats(List<TheaterSeatsEntity> theaterSeatsEntityList,ShowEntity showEntity){
 
         List<ShowSeatsEntity> showSeatsEntityList = new ArrayList<>();
 
@@ -72,28 +71,21 @@ public class ShowServiceImpl implements ShowService {
 //            log.info(tse.toString());
 //        }
 
-
         for(TheaterSeatsEntity tse : theaterSeatsEntityList){
-
             ShowSeatsEntity showSeatsEntity = ShowSeatsEntity.builder().seatNumber(tse.getSeatNumber())
-                    .seatType(tse.getSeatType())
-                    .rate(tse.getRate())
-                    .build();
+                    .seatType(tse.getSeatType()).rate(tse.getRate()).build();
 
             showSeatsEntityList.add(showSeatsEntity);
         }
-
 
         //We need to set the show Entity for each of the ShowSeat....
         for(ShowSeatsEntity showSeatsEntity:showSeatsEntityList){
             showSeatsEntity.setShow(showEntity);
         }
 
-        showSeatsRepository.saveAll(showSeatsEntityList);
-
-
         showEntity.setSeats(showSeatsEntityList);
 
+        return showSeatsEntityList;
     }
 
     @Override

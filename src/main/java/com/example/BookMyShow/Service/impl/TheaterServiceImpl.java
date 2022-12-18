@@ -32,10 +32,8 @@ public class TheaterServiceImpl implements TheaterService {
 
         TheaterEntity theaterEntity = TheaterConverter.convertDtoToEntity(theaterEntryDto);
 
-
         //create the Seats
         List<TheaterSeatsEntity> seats = createTheaterSeats();
-
 
         theaterEntity.setSeats(seats);
         //I need to set the theaterId for all these seats
@@ -45,7 +43,6 @@ public class TheaterServiceImpl implements TheaterService {
         for(TheaterSeatsEntity theaterSeatsEntity:seats){
             theaterSeatsEntity.setTheater(theaterEntity);
         }
-        theaterSeatsRepository.saveAll(seats);
 
         theaterEntity.setType(TheaterType.SINGLE);
 
@@ -53,8 +50,9 @@ public class TheaterServiceImpl implements TheaterService {
 
         theaterEntity = theaterRepository.save(theaterEntity);
 
-        TheaterResponseDto theaterResponseDto = TheaterConverter.convertEntityToDto(theaterEntity);
+        theaterSeatsRepository.saveAll(seats);
 
+        TheaterResponseDto theaterResponseDto = TheaterConverter.convertEntityToDto(theaterEntity);
 
         return theaterResponseDto;
 
